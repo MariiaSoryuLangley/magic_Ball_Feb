@@ -23,24 +23,38 @@ struct MainView: View {
     
     @ObservedObject var appState: AppState
     @State private var message = "Unshaken"
-
+    
     var body: some View {
-       
         
-        VStack(alignment: .center){
-          
-           //Spacer()
-            //Divider()
-            questionTextField(isPaddingEnabled: false, textFieldInput: $appState.questionText , navigationText: "Enter your question")
-                .padding(20)
+        NavigationView {
             
-            Text(message)
-                        .onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
-                            self.message = "Shaken, not stirred."
+            VStack(alignment: .center){
+                
+                //Spacer()
+                //Divider()
+                questionTextField(isPaddingEnabled: false, textFieldInput: $appState.questionText , navigationText: "Enter your question")
+                    .padding(20)
+                
+                Text(message)
+                    .onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
+                        self.message = "Shaken, not stirred."
                     }
-
-        }//.background(.black)
+                
+            }//.background(.black)
+            .toolbar {
+                ToolbarItem {
+                    Button(action: {
+                       
+                      //  go to settings
+                    }) {
+                        Image(systemName: "gearshape")
+                    
+                    }
+                }
+            }
+        }
         
+   
         
     }
 }
