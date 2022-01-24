@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SettingsView: View {
     
@@ -16,8 +17,11 @@ struct SettingsView: View {
        @FetchRequest(
            sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
            animation: .default)
+    
        private var items: FetchedResults<Item>
-   
+       
+    
+    
        var body: some View {
    
            NavigationView {
@@ -28,6 +32,7 @@ struct SettingsView: View {
                        } label: {
                            Text(item.timestamp!, formatter: itemFormatter)
                        }
+                       
                    }
                    .onDelete(perform: deleteItems)
                }
@@ -40,7 +45,24 @@ struct SettingsView: View {
                            Label("Add Item", systemImage: "plus")
                        }
                    }
+                  
+                   ToolbarItem {
+                       EditButton()
+                   }
+                   ToolbarItem(placement: .navigationBarLeading) {
+                       Button {
+                           
+                           appState.currentView = .Main
+                           print("go to mainScreen")
+                           
+                       } label: {
+                           Image(systemName: "chevron.backward")
+                           Text("Back")
+                       
+                       }
+                   }
                }
+              
                Text("Select an item")
                    .foregroundColor(.black)
            }

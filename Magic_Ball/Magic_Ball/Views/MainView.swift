@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import CoreData
 
 extension NSNotification.Name {
     public static let deviceDidShakeNotification = NSNotification.Name("MyDeviceDidShakeNotification")
@@ -23,12 +23,24 @@ struct MainView: View {
     
     @ObservedObject var appState: AppState
     @State private var message = "Unshaken"
+//    let container: NSPersistentContainer = NSPersistentContainer(name: "Magic_Ball")
+    
+   
+
     
     var body: some View {
         
-        NavigationView {
+        
+//        let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+//        let objects = try viewContext.fetch(fetchRequest)
+    
+        
+     
+//
+        NavigationView() {
             
             VStack(alignment: .center){
+                
                 
                 //Spacer()
                 //Divider()
@@ -37,16 +49,28 @@ struct MainView: View {
                 
                 Text(message)
                     .onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
-                        self.message = "Shaken, not stirred."
+                        
+                        let magicService = JSONparseService()
+                        magicService.setAppState(appState: appState)
+                        
+                        magicService.postGetLoginRequest(completion: {
+                            self.message = appState.answerText
+                          
+                        })
+                        
                     }
+                   
                 
             }//.background(.black)
             .toolbar {
                 ToolbarItem {
-                    Button(action: {
-                       
-                      //  go to settings
-                    }) {
+                    Button {
+                        
+
+                        appState.currentView = .Settings
+                        print("go to settings")
+                        
+                    } label: {
                         Image(systemName: "gearshape")
                     
                     }

@@ -14,8 +14,16 @@ struct ContentView: View {
     
     var body: some View {
         
-       MainView(appState: appState)
+        
+        if appState.currentView == .Main {
+            
+            MainView(appState: appState)
+            
+        } else if appState.currentView == .Settings {
+            
+            SettingsView(appState: appState)
+        }
         
     }
-
+    
 }

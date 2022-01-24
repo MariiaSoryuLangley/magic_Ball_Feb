@@ -10,7 +10,8 @@ import SwiftUI
 final class AppState: ObservableObject {
    
     @Published var questionText: String = ""
-  //  @Published var answerText: String = ""
+    @Published var currentView: CurrentViewModel = .Main
+    @Published var answerText: String = ""
     
 }
 

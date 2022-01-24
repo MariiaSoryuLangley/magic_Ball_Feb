@@ -18,6 +18,10 @@
 		CC29C10B279B0E3700C6CAC6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC29C10A279B0E3700C6CAC6 /* SettingsView.swift */; };
 		CC29C10E279B109F00C6CAC6 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC29C10D279B109F00C6CAC6 /* AppState.swift */; };
 		CC8C8990279DBDA200C13F36 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CC8C898F279DBDA200C13F36 /* Alamofire */; };
+		CC8C8994279EA2A400C13F36 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8C8993279EA2A400C13F36 /* CoreDataManager.swift */; };
+		CC8C8997279EB1E900C13F36 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8C8996279EB1E900C13F36 /* ViewModel.swift */; };
+		CC8C8999279EBC3000C13F36 /* JSONrequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8C8998279EBC3000C13F36 /* JSONrequest.swift */; };
+		CC8C899B279EBDB500C13F36 /* JSONparseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8C899A279EBDB500C13F36 /* JSONparseService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		CC29C108279B0E0D00C6CAC6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		CC29C10A279B0E3700C6CAC6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CC29C10D279B109F00C6CAC6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		CC8C8993279EA2A400C13F36 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		CC8C8996279EB1E900C13F36 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		CC8C8998279EBC3000C13F36 /* JSONrequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONrequest.swift; sourceTree = "<group>"; };
+		CC8C899A279EBDB500C13F36 /* JSONparseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONparseService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +73,8 @@
 		CC29C0F0279B0B9200C6CAC6 /* Magic_Ball */ = {
 			isa = PBXGroup;
 			children = (
+				CC8C8995279EB1AC00C13F36 /* Models */,
+				CC8C8992279EA28900C13F36 /* Managers */,
 				CC8C8991279DBDD300C13F36 /* Service */,
 				CC29C10C279B0EAD00C6CAC6 /* SecondaryViews */,
 				CC29C104279B0C3D00C6CAC6 /* Views */,
@@ -107,8 +117,26 @@
 		CC8C8991279DBDD300C13F36 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				CC8C899A279EBDB500C13F36 /* JSONparseService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		CC8C8992279EA28900C13F36 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				CC8C8993279EA2A400C13F36 /* CoreDataManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		CC8C8995279EB1AC00C13F36 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CC8C8996279EB1E900C13F36 /* ViewModel.swift */,
+				CC8C8998279EBC3000C13F36 /* JSONrequest.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,10 +217,14 @@
 			files = (
 				CC29C10B279B0E3700C6CAC6 /* SettingsView.swift in Sources */,
 				CC29C0FB279B0B9300C6CAC6 /* Persistence.swift in Sources */,
+				CC8C8997279EB1E900C13F36 /* ViewModel.swift in Sources */,
+				CC8C899B279EBDB500C13F36 /* JSONparseService.swift in Sources */,
 				CC29C109279B0E0D00C6CAC6 /* MainView.swift in Sources */,
 				CC29C10E279B109F00C6CAC6 /* AppState.swift in Sources */,
 				CC29C107279B0C7F00C6CAC6 /* questionTextField.swift in Sources */,
 				CC29C0F4279B0B9200C6CAC6 /* ContentView.swift in Sources */,
+				CC8C8999279EBC3000C13F36 /* JSONrequest.swift in Sources */,
+				CC8C8994279EA2A400C13F36 /* CoreDataManager.swift in Sources */,
 				CC29C0FE279B0B9300C6CAC6 /* Magic_Ball.xcdatamodeld in Sources */,
 				CC29C0F2279B0B9200C6CAC6 /* Magic_BallApp.swift in Sources */,
 			);
