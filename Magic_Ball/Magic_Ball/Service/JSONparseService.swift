@@ -23,7 +23,7 @@ final class JSONparseService{
     
     func postGetLoginRequest(completion: @escaping () -> Void)
     {
-        guard let url = URL(string: "https://8ball.delegator.com/magic/JSON/%3Cquestion_string%3E") else {
+        guard let url = URL(string: "https://8ball.delegator.com/magic/JSON/%3C\(appState.questionText)%3E") else {
             print("Invalid URL")
             return
         }
