@@ -11,24 +11,12 @@ struct questionTextField: View {
     
     let isPaddingEnabled: Bool
     @Binding var textFieldInput: String
-    var navigationText: String
     
     var body: some View {
         
         VStack{
             
-            ZStack(alignment: .leading) {
-
-            if textFieldInput == "" {
-                Text(navigationText)
-                    .font(.custom("Inter-Regular", size: 12))
-                    .foregroundColor(.gray)
-                    .allowsHitTesting(false)
-                    .padding(.leading, 10)
-                
-            }
-            
-            TextField("", text: $textFieldInput)
+            TextField("Enter your question", text: $textFieldInput)
                 .foregroundColor(Color.black)
                 .textFieldStyle(PlainTextFieldStyle())
                 .padding(5)
@@ -39,8 +27,6 @@ struct questionTextField: View {
                         .opacity(0.4)
                         .background(Color.white)
                 )
-            
-        }
         }
         .padding(.horizontal, isPaddingEnabled ? 20 : 0)
         .padding(.vertical, isPaddingEnabled ? 20 : 0)

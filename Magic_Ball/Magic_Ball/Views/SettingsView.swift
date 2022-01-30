@@ -13,104 +13,93 @@ struct SettingsView: View {
     @ObservedObject var appState: AppState
     
     @Environment(\.managedObjectContext) private var viewContext
-   
-       @FetchRequest(
-           sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-           animation: .default)
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Phrases.row, ascending: true)],
+                  animation: .default)
+    private var myPhrases: FetchedResults<Phrases>
     
-       private var items: FetchedResults<Item>
-       
+    @State var phrasesTextField = String()
     
-    
-       var body: some View {
-   
-           NavigationView {
-               List {
-                   ForEach(items) { item in
-                       NavigationLink {
-                           Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                       } label: {
-                           Text(item.timestamp!, formatter: itemFormatter)
-                       }
-                       
-                   }
-                   .onDelete(perform: deleteItems)
-               }
-               .toolbar {
-                   ToolbarItem(placement: .navigationBarTrailing) {
-                       EditButton()
-                   }
-                   ToolbarItem {
-                       Button(action: addItem) {
-                           Label("Add Item", systemImage: "plus")
-                       }
-                   }
-                  
-                   ToolbarItem {
-                       EditButton()
-                   }
-                   ToolbarItem(placement: .navigationBarLeading) {
-                       Button {
-                           
-                           appState.currentView = .Main
-                           print("go to mainScreen")
-                           
-                       } label: {
-                           Image(systemName: "chevron.backward")
-                           Text("Back")
-                       
-                       }
-                   }
-               }
-              
-               Text("Select an item")
-                   .foregroundColor(.black)
-           }
-       }
-   
-       private func addItem() {
-           withAnimation {
-               let newItem = Item(context: viewContext)
-               newItem.timestamp = Date()
-   
-               do {
-                   try viewContext.save()
-               } catch {
-                   // Replace this implementation with code to handle the error appropriately.
-                   // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                   let nsError = error as NSError
-                   fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-               }
-           }
-       }
-   
-       private func deleteItems(offsets: IndexSet) {
-           withAnimation {
-               offsets.map { items[$0] }.forEach(viewContext.delete)
-   
-               do {
-                   try viewContext.save()
-               } catch {
-                   // Replace this implementation with code to handle the error appropriately.
-                   // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                   let nsError = error as NSError
-                   fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-               }
-           }
-       }
-   }
-   
-   private let itemFormatter: DateFormatter = {
-       let formatter = DateFormatter()
-       formatter.dateStyle = .short
-       formatter.timeStyle = .medium
-       return formatter
-   }()
-   
-   struct ContentView_Previews: PreviewProvider {
-       static var previews: some View {
-           ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-       }
-}
+    var body: some View {
+        
+        NavigationView {
 
+            List{
+                
+                TextField("Enter Phrase", text: $phrasesTextField, onCommit: {
+                    
+                    if phrasesTextField != "" {
+                        let phraseToSave = Phrases(context: viewContext)
+                        phraseToSave.id = UUID()
+                        phraseToSave.answer = "\(phrasesTextField)"
+                        phraseToSave.row = (myPhrases.last?.row ?? 0) + 1
+                        
+                        try? self.viewContext.save()
+                        phrasesTextField = ""
+                    }
+                    
+                }).padding(10)
+                    .font(.system(size: 20))
+                    .border(Color.black)
+                
+                ForEach(myPhrases, id: \.id) { addToList in
+                    
+                    Text("\(addToList.answer ?? "Unknown")")
+                }
+                .onMove(perform: move)
+                .onDelete(perform: delete)
+                .font(.system(size: 20 ))
+                
+            }
+            .environment(\.editMode, .constant(appState.isEditing))
+            .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        
+                        EditButton(appState: appState)
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                       
+                        
+                        BackButton(appState: appState)
+                    }
+                }
+
+            Text("Select an item")
+        }
+        
+    }
+    private func delete(at offsets: IndexSet){
+        
+        for offset in offsets{
+            let phrasesText = myPhrases[offset]
+            viewContext.delete(phrasesText)
+            saveData()
+        }
+    }
+    
+    private func saveData(){
+        try? self.viewContext.save()
+    }
+    
+    private func move(from source: IndexSet, to destination: Int){
+        
+        if source.first! > destination{
+            myPhrases[source.first!].row = myPhrases[destination].row - 1
+            
+            for i in destination...myPhrases.count - 1{
+                myPhrases[i].row = myPhrases[i].row + 1
+            }
+            
+        }
+        
+        if source.first! < destination{
+            myPhrases[source.first!].row = myPhrases[destination - 1].row + 1
+            
+            for i in 0...destination - 1{
+                myPhrases[i].row = myPhrases[i].row - 1
+            }
+        }
+        saveData()
+    }
+    
+}
 

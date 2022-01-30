@@ -44,7 +44,7 @@ final class JSONparseService{
                     
                 }catch {
                     
-                    print("Maxim pidor")
+                
                     
                 }
                 

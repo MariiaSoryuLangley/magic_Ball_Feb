@@ -8,77 +8,61 @@
 import SwiftUI
 import CoreData
 
-extension NSNotification.Name {
-    public static let deviceDidShakeNotification = NSNotification.Name("MyDeviceDidShakeNotification")
-}
-
-extension UIWindow {
-    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-        super.motionEnded(motion, with: event)
-        NotificationCenter.default.post(name: .deviceDidShakeNotification, object: event)
-    }
-}
-
 struct MainView: View {
     
     @ObservedObject var appState: AppState
-    @State private var message = "Unshaken"
-//    let container: NSPersistentContainer = NSPersistentContainer(name: "Magic_Ball")
-    
-   
-
+    @FetchRequest(entity: Phrases.entity(), sortDescriptors: []) var phrase: FetchedResults<Phrases>
     
     var body: some View {
         
-        
-//        let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
-//        let objects = try viewContext.fetch(fetchRequest)
-    
-        
-     
-//
         NavigationView() {
             
             VStack(alignment: .center){
                 
-                
-                //Spacer()
-                //Divider()
-                questionTextField(isPaddingEnabled: false, textFieldInput: $appState.questionText , navigationText: "Enter your question")
+                questionTextField(isPaddingEnabled: false, textFieldInput: $appState.questionText)
                     .padding(20)
                 
-                Text(message)
+                Text(appState.message)
                     .onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
                         
-                        let magicService = JSONparseService()
-                        magicService.setAppState(appState: appState)
-                        
-                        magicService.postGetLoginRequest(completion: {
-                            self.message = appState.answerText
-                          
-                        })
+                        if (appState.questionText != ""){
+                            
+                            if Reachability.isConnectedToNetwork(){
+                                
+                                let magicService = JSONparseService()
+                                magicService.setAppState(appState: appState)
+                                
+                                magicService.postGetLoginRequest(completion: {
+                                    self.appState.message = self.appState.answerText
+                                    self.appState.questionText = ""
+                                    
+                                })
+                            }else{
+                                for number in 0 ..< phrase.count{
+                                    
+                                    appState.arrayOfAllPhrases.append(phrase[number].answer ?? "Unknown")
+                                    
+                                }
+                                self.appState.message = appState.arrayOfAllPhrases.randomElement() ?? "First add some phrases in settings, please"
+                                self.appState.questionText = ""
+                            }
+
+
+                        } else {
+                            self.appState.message = "Enter your text first!"
+                        }
                         
                     }
-                   
                 
-            }//.background(.black)
+            }
             .toolbar {
                 ToolbarItem {
-                    Button {
-                        
-
-                        appState.currentView = .Settings
-                        print("go to settings")
-                        
-                    } label: {
-                        Image(systemName: "gearshape")
-                    
-                    }
+                    SettingsButton(appState: appState)
                 }
             }
         }
         
-   
+        
         
     }
 }

@@ -12,6 +12,12 @@ final class AppState: ObservableObject {
     @Published var questionText: String = ""
     @Published var currentView: CurrentViewModel = .Main
     @Published var answerText: String = ""
+    @Published var arrayOfAllPhrases: [String] = []
+    @Published var message: String = ""
+    
+    @Published var isEditing: EditMode = .inactive
+    @Published var switchBetweenEditMode = false
+    
     
 }
 
